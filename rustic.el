@@ -48,8 +48,10 @@
   :group 'languages)
 
 ;;; Define aliases for removed rustic functions
+(if (and (version<= "29.1" emacs-version) rust-mode-treesitter-derive)
+    (defvaralias 'rustic-indent-offset 'rust-ts-mode-indent-offset)
+  (defvaralias 'rustic-indent-offset 'rust-indent-offset))
 
-(defvaralias 'rustic-indent-offset 'rust-indent-offset)
 (defvaralias 'rustic-indent-method-chain 'rust-indent-method-chain)
 (defvaralias 'rustic-indent-where-clause 'rust-indent-where-clause)
 (defvaralias 'rustic-match-angle-brackets 'rust-match-angle-brackets)
@@ -160,7 +162,7 @@ this variable."
   :group 'rustic
 
   (when (bound-and-true-p rustic-cargo-auto-add-missing-dependencies)
-   (add-hook 'lsp-after-diagnostics-hook 'rustic-cargo-add-missing-dependencies-hook nil t)))
+    (add-hook 'lsp-after-diagnostics-hook 'rustic-cargo-add-missing-dependencies-hook nil t)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode))
